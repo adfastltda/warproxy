@@ -42,4 +42,4 @@ jobs:
       - name: Trigger Webhook
         run: |
           curl -X GET -H "Content-Type: application/json" \
-          https://easypanel.adfast.com.br/api/deploy/
+          https://easypanel.adfast.com.br/api/deploy/27b0d362e8ce92b1bc7b85fe31a5b634f73d02259729b6c5
