@@ -25,11 +25,8 @@ COPY --from=wgcf-builder /usr/local/bin/wgcf /bar/usr/local/bin/wgcf
 
 COPY root/ /bar/
 
-RUN chmod a+x \
-        /bar/usr/local/bin/* \
-        /bar/etc/s6-overlay/s6-rc.d/*/run \
-        /bar/etc/s6-overlay/s6-rc.d/*/finish \
-        /bar/etc/s6-overlay/s6-rc.d/*/data/*
+RUN chmod a+x /bar/usr/local/bin/* && \
+    find /bar/etc/s6-overlay/s6-rc.d/ -type f \( -name run -o -name finish -o -path "*/data/*" \) -exec chmod a+x {} +
 
 #--------------#
 
