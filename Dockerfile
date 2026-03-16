@@ -33,7 +33,7 @@ RUN chmod a+x \
 
 #--------------#
 
-FROM base As publisher
+FROM base AS publisher
 
 LABEL maintainer="kingcc"
 LABEL org.opencontainers.image.source=https://github.com/kingcc/warproxy
