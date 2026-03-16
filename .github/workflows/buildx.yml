@@ -3,14 +3,17 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main  # Dispara sempre que houver commit no main
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'docker-compose.yml'
 
 jobs:
   build_and_push:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write # Essencial para o GITHUB_TOKEN ter permissÃ£o de escrita
+      packages: write
 
     steps:
       - name: Checkout
@@ -32,13 +35,23 @@ jobs:
             type=raw,value=latest
             type=sha,format=short 
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
+          platforms: linux/amd64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Trigger Webhook
         run: |
           curl -X GET -H "Content-Type: application/json" \
